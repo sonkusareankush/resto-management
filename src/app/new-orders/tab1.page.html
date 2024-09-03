@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      New Order
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-content style="text-align: center">
+      <ion-button id="open-modal" (click)="openModal()">
+        <ion-icon name="add-circle"></ion-icon>
+      </ion-button>
+      <!-- <ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.75" [breakpoints]="[ 0.25, 0.5, 0.75, 1]">
+        <ng-template>
+          <app-order-form [modal] ="modal"></app-order-form> 
+        </ng-template>
+        </ion-modal> -->
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>
