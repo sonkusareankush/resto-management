@@ -10,18 +10,19 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-// Add your App ID
-env = environment.production;
-itemList:any=[];
-orderList:any=[];
+  // Add your App ID
+  env = environment.production;
+  itemList: any = [];
+  orderList: any = [];
+  user: any;
 
   constructor(private modalCtrl: ModalController) {
-    
+
   }
 
-  app:any = new Realm.App({ id: environment.APP_ID });
+  app: any = new Realm.App({ id: environment.APP_ID });
 
-  ngOnInit(){
+  ngOnInit() {
     this.logIn();
   }
 
@@ -29,29 +30,45 @@ orderList:any=[];
     // Create an anonymous credential
     const credentials = Realm.Credentials.anonymous();
 
-    // Authenticate the user
-    const user = await this.app.logIn(credentials);
-    // `App.currentUser` updates to match the logged in user
-    console.assert(user.id === this.app.currentUser.id);
+    // loginwith email
+    // const credentials = Realm.Credentials.emailPassword(environment.APP_EID,environment.APP_PASS);
 
-    this.itemList = await user.functions.Get_data();
-    console.log( this.itemList);
+    // Authenticate the user
+    this.user = await this.app.logIn(credentials);
+    console.log(this.user)
+    // `App.currentUser` updates to match the logged in user
+    console.assert(this.user.id === this.app.currentUser.id);
+
+    this.itemList = await this.user.functions.getItemsData();
+
+    let orders = await this.user.functions.getOrdersData();
+    this.orderList = orders.result;
+
+    console.log(this.itemList);
+    console.log(this.orderList);
+
 
   }
 
   async openModal() {
     const modal = await this.modalCtrl.create({
       component: OrderFormComponent,
-      initialBreakpoint:1,
-      breakpoints:[ 0.25, 0.5, 0.75, 1],
-      componentProps:{ itemList: this.itemList.result}
+      initialBreakpoint: 1,
+      breakpoints: [0.25, 0.5, 0.75, 1],
+      componentProps: { itemList: this.itemList.result }
     });
     modal.present();
 
     const data = await modal.onWillDismiss();
-    if(data.role === 'confirm'){
-      this.orderList.push(data.data);
-      console.log(this.orderList)
+    if (data.role === 'confirm') {
+      console.log(data.data)
+      let result = await this.user.functions.insertOrdersData(data.data);
+      console.log(result)
+      if (result.success) {
+        this.orderList.push(data.data);
+        console.log(this.orderList)
+      }
+
     }
   }
 

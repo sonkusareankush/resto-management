@@ -22,7 +22,7 @@ console.log(this.itemList);
   }
   constructor(private modalCtrl: ModalController) { 
     this.orderForm = new FormGroup({
-      customerName: new FormControl('', [Validators.required]),
+      customer_Name: new FormControl('', [Validators.required]),
       items: new FormArray([]),
       notes: new FormControl(''),
       discount: new FormControl(0, [Validators.min(0), Validators.max(100)])
@@ -85,16 +85,13 @@ console.log(this.itemList);
   onSubmit() {
     if (this.orderForm.valid) {
       const orderData = this.orderForm.value;
-      // console.log('Order submitted:', orderData);
-      // console.log('Total Price Before Discount:', this.totalPriceBeforeDiscount);
-      // console.log('Total Price After Discount:', this.totalPriceAfterDiscount);
-      // Logic to save the order or pass it to another service
+      
       let data = {
-        orderData:orderData,
+        order_Data:orderData,
         id: uuidv4(),
-        totalPriceBeforeDiscount:this.totalPriceBeforeDiscount,
-        totalPriceAfterDiscount:this.totalPriceAfterDiscount,
-        createdAt: new Date()
+        total_Price_BeforeDiscount:this.totalPriceBeforeDiscount,
+        total_Price_AfterDiscount:this.totalPriceAfterDiscount,
+        created_At: new Date()
       }
       console.log(data);
        this.modalCtrl.dismiss(data,'confirm');

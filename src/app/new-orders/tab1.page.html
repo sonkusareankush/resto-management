@@ -17,10 +17,10 @@
   <ng-container *ngIf="orderList.length > 0">
   <app-order-details-card
   *ngFor="let order of orderList"
-  [customerName]="order.orderData.customerName"
-  [totalPriceBeforeDiscount]="order.totalPriceAfterDiscount"
-  [totalPriceAfterDiscount]="order.totalPriceBeforeDiscount"
-  [discount]="order.orderData.discount">
+  [customerName]="order.order_Data.customer_Name"
+  [totalPriceBeforeDiscount]="order.total_Price_AfterDiscount"
+  [totalPriceAfterDiscount]="order.total_Price_BeforeDiscount"
+  [discount]="order.order_Data.discount">
 </app-order-details-card>
 </ng-container>
 </ion-content>
