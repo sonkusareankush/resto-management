@@ -1,7 +1,7 @@
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { OrderFormComponent } from 'src/components/order-form/order-form.component';
@@ -12,6 +12,7 @@ import { OrderFormComponent } from 'src/components/order-form/order-form.compone
     CommonModule,
     FormsModule,
     Tab1PageRoutingModule,
+    ReactiveFormsModule,
   ],
   declarations: [Tab1Page,OrderFormComponent]
 })

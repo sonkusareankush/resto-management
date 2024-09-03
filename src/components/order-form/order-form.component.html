@@ -1,16 +1,64 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons slot="end">
       <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
     </ion-buttons>
-    <ion-title>Welcome</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
-    </ion-buttons>
+    <ion-title style="text-align: center;">Order Form</ion-title>
+    <!-- <ion-buttons slot="end">
+      <ion-button (click)="onSubmit()" [strong]="true">Submit Order</ion-button>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  <ion-item>
-    <ion-input labelPlacement="stacked" label="Enter your name" [(ngModel)]="name" placeholder="Your name"></ion-input>
-  </ion-item>
+
+<ion-content>
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="floating">Customer Name</ion-label>
+      <ion-input formControlName="customerName" type="text"></ion-input>
+    </ion-item>
+
+
+    <ion-list>
+      <ion-item-group formArrayName="items">
+        <ion-item *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+          <ion-label position="floating">Select Item</ion-label>
+          <ion-select formControlName="item_name"  (ionChange)="onItemSelected(i)">
+            <ion-select-option *ngFor="let availableItem of itemList" [value]="availableItem.item_name">
+              {{ availableItem.item_name }}
+            </ion-select-option>
+          </ion-select>
+          <ion-label position="floating">Price</ion-label>
+          <ion-input formControlName="item_price" type="number" readonly></ion-input>
+          
+          <ion-label position="floating">Quantity</ion-label>
+          <ion-input formControlName="quantity" type="number"></ion-input>
+          <ion-button color="danger" (click)="removeItem(i)">Remove</ion-button>
+        </ion-item>
+      </ion-item-group>
+    </ion-list>
+
+
+
+    <ion-button expand="full" (click)="addItem()">Add Another Item</ion-button>
+
+    <ion-item>
+      <ion-label position="floating">Discount (%)</ion-label>
+      <ion-input formControlName="discount" type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Notes</ion-label>
+      <ion-textarea formControlName="notes"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Total Price (Before Discount):</ion-label>
+      <ion-label>{{ totalPriceBeforeDiscount | currency:'INR' }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Total Price (After Discount):</ion-label>
+      <ion-label>{{ totalPriceAfterDiscount | currency:'INR' }}</ion-label>
+    </ion-item>
+
+    <ion-button expand="full" type="submit" [disabled]="orderForm.invalid">Submit Order</ion-button>
+  </form>
 </ion-content>

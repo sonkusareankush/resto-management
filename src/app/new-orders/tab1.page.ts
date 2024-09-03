@@ -12,6 +12,8 @@ import { environment } from 'src/environments/environment';
 export class Tab1Page {
 // Add your App ID
 env = environment.production;
+itemList:any=[];
+orderList:any=[];
 
   constructor(private modalCtrl: ModalController) {
     
@@ -32,22 +34,25 @@ env = environment.production;
     // `App.currentUser` updates to match the logged in user
     console.assert(user.id === this.app.currentUser.id);
 
-    const data = await user.functions.Get_data();
-    console.log(data);
+    this.itemList = await user.functions.Get_data();
+    console.log( this.itemList);
 
   }
 
   async openModal() {
-    const prop = {data:"data"};
     const modal = await this.modalCtrl.create({
       component: OrderFormComponent,
-      initialBreakpoint:0.75,
+      initialBreakpoint:1,
       breakpoints:[ 0.25, 0.5, 0.75, 1],
-      componentProps: prop
+      componentProps:{ itemList: this.itemList.result}
     });
     modal.present();
 
     const data = await modal.onWillDismiss();
+    console.log(data);
+    if(data.role === 'confirm'){
+      this.orderList.push(data);
+    }
   }
 
 
