@@ -1,0 +1,27 @@
+<ion-card *ngIf="customerName">
+  <!-- <ion-card-header>
+    <ion-card-title>Order Summary</ion-card-title>
+  </ion-card-header> -->
+
+  <ion-card-content>
+    <ion-item>
+      <ion-label><strong>Customer Name:</strong></ion-label>
+      <ion-label>{{ customerName }}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><strong>Total Price (Before Discount):</strong></ion-label>
+      <ion-label>{{ totalPriceBeforeDiscount | currency:'INR' }}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><strong>Total Price (After Discount):</strong></ion-label>
+      <ion-label>{{ totalPriceAfterDiscount | currency:'INR' }}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><strong>Discount Applied:</strong></ion-label>
+      <ion-label>{{ discount }}%</ion-label>
+    </ion-item>
+  </ion-card-content>
+</ion-card>

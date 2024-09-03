@@ -49,9 +49,9 @@ orderList:any=[];
     modal.present();
 
     const data = await modal.onWillDismiss();
-    console.log(data);
     if(data.role === 'confirm'){
-      this.orderList.push(data);
+      this.orderList.push(data.data);
+      console.log(this.orderList)
     }
   }
 

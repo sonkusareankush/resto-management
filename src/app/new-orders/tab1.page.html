@@ -14,4 +14,13 @@
       </ion-button>
     </ion-card-content>
   </ion-card>
+  <ng-container *ngIf="orderList.length > 0">
+  <app-order-details-card
+  *ngFor="let order of orderList"
+  [customerName]="order.orderData.customerName"
+  [totalPriceBeforeDiscount]="order.totalPriceAfterDiscount"
+  [totalPriceAfterDiscount]="order.totalPriceBeforeDiscount"
+  [discount]="order.orderData.discount">
+</app-order-details-card>
+</ng-container>
 </ion-content>
