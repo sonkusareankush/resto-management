@@ -7,8 +7,8 @@
       // Preserve the original path
       const originalPath = window.location.pathname + window.location.search + window.location.hash;
       // Redirect to the index.html
-      // window.location.replace('/index.html?' + originalPath);
-      window.location.replace('/index.html?redirect=' + encodeURIComponent(originalPath));
+      window.location.replace('/index.html?' + originalPath);
+      // window.location.replace('/index.html?redirect=' + encodeURIComponent(originalPath));
     }
   </script>
 </head>
