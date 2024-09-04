@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script>
-    // Check if the page is not already the index.html
-    if (window.location.pathname !== '/index.html') {
-      // Preserve the original path
-      const originalPath = window.location.pathname + window.location.search + window.location.hash;
-      // Redirect to the index.html
-      window.location.replace('/index.html?' + originalPath);
-      // window.location.replace('/index.html?redirect=' + encodeURIComponent(originalPath));
+  <script type="text/javascript">
+    // This will redirect any unknown route to the index.html while preserving the path
+    var redirectTo = window.location.pathname + window.location.search + window.location.hash;
+    if (!redirectTo.startsWith("/index.html")) {
+      window.location.replace("/index.html#" + redirectTo);
     }
   </script>
 </head>
