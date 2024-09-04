@@ -19,8 +19,8 @@
   <app-order-details-card
   *ngFor="let order of orderList"
   [customerName]="order.order_Data.customer_Name"
-  [totalPriceBeforeDiscount]="order.total_Price_AfterDiscount"
-  [totalPriceAfterDiscount]="order.total_Price_BeforeDiscount"
+  [totalPriceBeforeDiscount]="order.total_Price_BeforeDiscount"
+  [totalPriceAfterDiscount]="order.total_Price_AfterDiscount"
   [discount]="order.order_Data.discount">
 </app-order-details-card>
 </ng-container>

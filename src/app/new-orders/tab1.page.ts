@@ -14,8 +14,8 @@ export class Tab1Page {
   env = environment.production;
   itemList: any = [];
   orderList: any = [];
-  user:any;
-  credentials:any;
+  user: any;
+  credentials: any;
   constructor(private modalCtrl: ModalController) {
     this.credentials = Realm.Credentials.anonymous();
     // this.user =  this.app.logIn(this.credentials);
@@ -47,13 +47,23 @@ export class Tab1Page {
     this.orderList = orders.result;
     console.log(this.orderList);
 
-    
+
+    this.sortOrderList();
+    this.totalDayWise();
+
+
+
     console.log(this.itemList);
 
 
   }
+  sortOrderList() {
+    this.orderList.sort((a: { created_At: string | number | Date; }, b: { created_At: string | number | Date; }) => {
+      return new Date(b.created_At).getTime() - new Date(a.created_At).getTime();
+    });
+  }
 
-  async getOrdersData(){
+  async getOrdersData() {
     let orders = await this.user.functions.getOrdersData();
     this.orderList = orders.result;
     console.log(this.orderList);
@@ -77,10 +87,40 @@ export class Tab1Page {
       console.log(result)
       if (result.success) {
         this.orderList.push(data.data);
-        console.log(this.orderList)
+        this.sortOrderList();
+        this.totalDayWise();
       }
 
     }
+  }
+
+
+  totalDayWise() {
+
+    // Create a map to group orders by day
+    const earningsMap = new Map<string, number>();
+
+    this.orderList.forEach((order:any) => {
+      const date = new Date(order.created_At);
+      const day = date.toISOString().split('T')[0]; // Get the date string in 'YYYY-MM-DD' format
+
+      // Calculate the sum of total_Price_AfterDiscount for each day
+      if (earningsMap.has(day)) {
+        earningsMap.set(day, earningsMap.get(day)! + order.total_Price_AfterDiscount);
+      } else {
+        earningsMap.set(day, order.total_Price_AfterDiscount);
+      }
+    });
+
+    // Convert the map into an array of objects in the desired format
+    const earningsArray = Array.from(earningsMap.entries()).map(([day, earning]) => ({
+      day,
+      earning
+    }));
+
+    console.log(earningsArray);
+    localStorage.setItem('Earning_History', JSON.stringify(earningsArray));
+
   }
 
 
