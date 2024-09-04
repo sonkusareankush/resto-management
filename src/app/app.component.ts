@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    const originalPath = urlParams.get('originalPath');
+
+    if (originalPath) {
+      this.router.navigateByUrl(originalPath);
+    }
+  }
 }
