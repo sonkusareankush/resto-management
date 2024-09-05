@@ -1,5 +1,6 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar style="margin-top: 13%;">
+
     <ion-title style="text-align: center;">
       New Order
     </ion-title>
@@ -10,18 +11,16 @@
         </ion-button>
       </ion-card-content>
     </ion-card>
+    <!-- <button ion-button (click)="logout()">Logout</button> -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+
   <ng-container *ngIf="orderList.length > 0">
-  <app-order-details-card
-  *ngFor="let order of orderList"
-  [customerName]="order.order_Data.customer_Name"
-  [totalPriceBeforeDiscount]="order.total_Price_BeforeDiscount"
-  [totalPriceAfterDiscount]="order.total_Price_AfterDiscount"
-  [discount]="order.order_Data.discount">
-</app-order-details-card>
-</ng-container>
+    <app-order-details-card *ngFor="let order of orderList" [customerName]="order.order_Data.customer_Name"
+      [totalPriceBeforeDiscount]="order.total_Price_BeforeDiscount"
+      [totalPriceAfterDiscount]="order.total_Price_AfterDiscount" [discount]="order.order_Data.discount">
+    </app-order-details-card>
+  </ng-container>
 </ion-content>

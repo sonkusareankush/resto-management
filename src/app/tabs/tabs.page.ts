@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LogOutService } from 'src/services/log-out.service';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor(
+    private LogOutService: LogOutService
+  ) {}
+
+  logout() {
+    this.LogOutService.logOut();
+  }
 
 }

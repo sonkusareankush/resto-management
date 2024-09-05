@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import * as Realm from "realm-web";
 import { OrderFormComponent } from 'src/components/order-form/order-form.component';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/services/auth.service';
 
 @Component({
   selector: 'app-tab1',
@@ -14,9 +15,11 @@ export class Tab1Page {
   env = environment.production;
   itemList: any = [];
   orderList: any = [];
-  user: any;
+  user: any ;
   credentials: any;
-  constructor(private modalCtrl: ModalController) {
+  constructor(private modalCtrl: ModalController,
+    private authService: AuthService
+  ) {
     this.credentials = Realm.Credentials.anonymous();
     // this.user =  this.app.logIn(this.credentials);
 
@@ -24,29 +27,39 @@ export class Tab1Page {
 
   app: any = new Realm.App({ id: environment.APP_ID });
 
-  ngOnInit() {
-    this.getItems();
+  async ngOnInit() {
+    // const _user = localStorage.getItem('user')
+    // if (_user !== null) {
+    // this.user = JSON.parse(_user);
+    // }
+    // console.log(this.user)
+    // this.getItems();
     // this.getOrdersData();
+
+    // this.user = await this.authService.user;
+    // console.log(this.user)
+
+  }
+  async ionViewWillEnter(){
+    // this.getItems();
+    this.user = await this.authService.user;
+    console.log(this.user);
+    this.getItems();
   }
 
   async getItems() {
     // Create an anonymous credential
     // const credentials = Realm.Credentials.anonymous();
 
-    // loginwith email
-    // const credentials = Realm.Credentials.emailPassword(environment.APP_EID,environment.APP_PASS);
-
-    // Authenticate the user
-    this.user = await this.app.logIn(this.credentials);
-    console.log(this.user)
     // `App.currentUser` updates to match the logged in user
     console.assert(this.user.id === this.app.currentUser.id);
 
     this.itemList = await this.user.functions.getItemsData();
     let orders = await this.user.functions.getOrdersData();
+    let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date()); 
     this.orderList = orders.result;
     console.log(this.orderList);
-
+    console.log('todaysOrders',todaysOrders);
 
     this.sortOrderList();
     this.totalDayWise();
@@ -123,6 +136,8 @@ export class Tab1Page {
 
   }
 
-
+  logout() {
+    this.authService.logout();
+  }
 
 }

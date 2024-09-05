@@ -1,0 +1,11 @@
+<form (submit)="login()">
+  <ion-item>
+    <ion-label>ID</ion-label>
+    <ion-input [(ngModel)]="email" type="email" name="email" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Password</ion-label>
+    <ion-input [(ngModel)]="password" type="password" name="password" required></ion-input>
+  </ion-item>
+  <ion-button type="submit" expand="full">Login</ion-button>
+</form>
