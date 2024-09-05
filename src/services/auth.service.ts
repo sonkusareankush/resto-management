@@ -11,11 +11,9 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   private app: Realm.App;
   public _user: Realm.User | null = null; // Store the user object
-  private _storage: Storage | null = null;
 
 
-  constructor(private router: Router,
-    private storage: Storage
+  constructor(private router: Router
   ) { 
     this.app = new Realm.App({ id: environment.APP_ID });
     this.restoreUserSession();
