@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar style="margin-top: 13%;">
     <ion-title style="text-align: center;">
      Order Status
@@ -8,4 +8,33 @@
 
 <ion-content [fullscreen]="true">
   <p> Order Status</p>
+  </ion-content> -->
+  <!-- <ion-header>
+    <ion-toolbar>
+      <ion-title>Delete Items</ion-title>
+    </ion-toolbar>
+  </ion-header> -->
+  
+  <ion-content style="top: 10%;">
+    <!-- <ion-title style="text-align: center;margin-top: 13%;">
+      Delete Items</ion-title> -->
+
+    <ion-list>
+      <ion-item *ngFor="let item of itemList">
+        <ion-label>
+          <h2>{{ item.item_name }}</h2>
+          <p>Price: {{ item.item_price }}</p>
+          <p>Section: {{ item.item_section }}</p>
+        </ion-label>
+        <ion-button color="danger" (click)="confirmDelete(item._id)">
+          Delete
+        </ion-button>
+      </ion-item>
+    </ion-list>
   </ion-content>
+
+  <ion-fab  vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary">
+      <ion-icon name="add" (click)="openModal()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>

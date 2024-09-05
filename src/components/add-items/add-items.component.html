@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title style="text-align: center;">Add Items</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <form [formGroup]="itemsForm" (ngSubmit)="submitForm()">
+    <ion-list formArrayName="items">
+      <ion-item *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+        <ion-label position="floating">Item Name</ion-label>
+        <ion-input formControlName="item_name"></ion-input>
+  
+        <ion-label position="floating">Item Price</ion-label>
+        <ion-input type="number" formControlName="item_price"></ion-input>
+  
+        <ion-label position="floating">Item Section</ion-label>
+        <ion-input formControlName="item_section"></ion-input>
+  
+        <ion-button color="danger" (click)="removeItem(i)">Remove</ion-button>
+      </ion-item>
+    </ion-list>
+  
+    <ion-button expand="full" (click)="addItem()">Add Another Item</ion-button>
+    <ion-button expand="full" type="submit">Submit</ion-button>
+  </form>
+  
+
+  
+</ion-content>
+
+

@@ -28,10 +28,7 @@ export class Tab1Page {
   app: any = new Realm.App({ id: environment.APP_ID });
 
   async ngOnInit() {
-    // const _user = localStorage.getItem('user')
-    // if (_user !== null) {
-    // this.user = JSON.parse(_user);
-    // }
+
     // console.log(this.user)
     // this.getItems();
     // this.getOrdersData();
@@ -44,7 +41,9 @@ export class Tab1Page {
     // this.getItems();
     this.user = await this.authService.user;
     console.log(this.user);
-    this.getItems();
+    if(this.user){
+      this.getItems();
+    }
   }
 
   async getItems() {
@@ -55,10 +54,12 @@ export class Tab1Page {
     console.assert(this.user.id === this.app.currentUser.id);
 
     this.itemList = await this.user.functions.getItemsData();
-    let orders = await this.user.functions.getOrdersData();
+    // let orders = await this.user.functions.getOrdersData();
     let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date()); 
-    this.orderList = orders.result;
-    console.log(this.orderList);
+    // this.orderList = orders.result;//AllOrders
+    this.orderList = todaysOrders.result;
+
+    // console.log('All Orders',orders);
     console.log('todaysOrders',todaysOrders);
 
     this.sortOrderList();
