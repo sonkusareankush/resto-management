@@ -36,6 +36,9 @@
           },
           "configurations": {
             "production": {
+              "outputPath": "docs", 
+              "baseHref": "/resto-management/",         
+           
               "budgets": [
                 {
                   "type": "initial",
