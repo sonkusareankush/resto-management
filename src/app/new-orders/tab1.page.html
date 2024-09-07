@@ -14,16 +14,19 @@
   </ion-toolbar>
 </ion-header> -->
 
-<ion-content style="top: 10%;" [fullscreen]="true">
+<ion-content  [fullscreen]="true">
   <!-- <ion-title style="text-align: center;margin-top: 13%;">
     New Order
   </ion-title> -->
   <ng-container *ngIf="orderList.length > 0">
+    <div style="    margin-top: 13%;
+">
     <app-order-details-card *ngFor="let order of orderList"  [orderData]="order" [customerName]="order.order_Data.customer_Name"
       [totalPriceBeforeDiscount]="order.total_Price_BeforeDiscount"
       [totalPriceAfterDiscount]="order.total_Price_AfterDiscount" [discount]="order.order_Data.discount"
       (dataEvent)="editOrder($event)">
     </app-order-details-card>
+  </div>
   </ng-container>
 </ion-content>
 <ion-fab  vertical="bottom" horizontal="end" slot="fixed">
