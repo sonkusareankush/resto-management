@@ -1,8 +1,9 @@
 <ion-card *ngIf="customerName">
-  <ion-card-header style="    align-items: end;
-">
+  <ion-card-header style="padding: 0;">
     <!-- <ion-card-title>Order Summary</ion-card-title> -->
-     <div>
+     <div style="display: flex;
+    place-content: space-between;">
+      <ion-item slot="start" lines="none">#{{index + 1}}</ion-item>
     <ion-buttons slot="end">
       <ion-button (click)="deleteOrder(orderData)" color="danger" fill="clear">
         <ion-icon name="trash"></ion-icon>

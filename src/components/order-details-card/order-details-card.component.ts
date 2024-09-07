@@ -11,6 +11,7 @@ export class OrderDetailsCardComponent  implements OnInit {
   @Input() totalPriceAfterDiscount: number = 0;
   @Input() discount: number = 0;
   @Input() orderData:any;
+  @Input() index:any;
   @Output() dataEvent = new EventEmitter<{ arg1: string, arg2: any }>();
   @Output() deleteEvent = new EventEmitter<{ arg1: any } >();
 
