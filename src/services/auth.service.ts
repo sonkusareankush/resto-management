@@ -71,7 +71,10 @@ export class AuthService {
 
     // Expose the user object via a getter
     get user(): Realm.User | null {
-      return this._user;
-      
-    } 
+      if (!this._user) {
+        // Optionally attempt to restore the user session
+        this.restoreUserSession();
+      }
+      return this.app.currentUser;
+    }
 }
