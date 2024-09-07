@@ -19,14 +19,15 @@
     New Order
   </ion-title> -->
   <ng-container *ngIf="orderList.length > 0">
-    <app-order-details-card *ngFor="let order of orderList" [customerName]="order.order_Data.customer_Name"
+    <app-order-details-card *ngFor="let order of orderList"  [orderData]="order" [customerName]="order.order_Data.customer_Name"
       [totalPriceBeforeDiscount]="order.total_Price_BeforeDiscount"
-      [totalPriceAfterDiscount]="order.total_Price_AfterDiscount" [discount]="order.order_Data.discount">
+      [totalPriceAfterDiscount]="order.total_Price_AfterDiscount" [discount]="order.order_Data.discount"
+      (dataEvent)="editOrder($event)">
     </app-order-details-card>
   </ng-container>
 </ion-content>
 <ion-fab  vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button color="primary">
-    <ion-icon name="add" (click)="openModal()"></ion-icon>
+  <ion-fab-button (click)="openModal(null)" color="primary">
+    <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>

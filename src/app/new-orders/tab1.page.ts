@@ -15,7 +15,8 @@ export class Tab1Page {
   env = environment.production;
   itemList: any = [];
   orderList: any = [];
-  user: any ;
+  allOrdersData: any = [];
+  user: any;
   credentials: any;
   constructor(private modalCtrl: ModalController,
     private authService: AuthService
@@ -37,11 +38,11 @@ export class Tab1Page {
     // console.log(this.user)
 
   }
-  async ionViewWillEnter(){
+  async ionViewWillEnter() {
     // this.getItems();
     this.user = await this.authService.user;
     console.log(this.user);
-    if(this.user){
+    if (this.user) {
       this.getItems();
     }
   }
@@ -54,13 +55,14 @@ export class Tab1Page {
     console.assert(this.user.id === this.app.currentUser.id);
 
     this.itemList = await this.user.functions.getItemsData();
-    // let orders = await this.user.functions.getOrdersData();
-    let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date()); 
+    let orders = await this.user.functions.getOrdersData();
+    this.allOrdersData = orders.result;
+    let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date());
     // this.orderList = orders.result;//AllOrders
     this.orderList = todaysOrders.result;
 
     // console.log('All Orders',orders);
-    console.log('todaysOrders',todaysOrders);
+    console.log('todaysOrders', todaysOrders);
 
     this.sortOrderList();
     this.totalDayWise();
@@ -84,17 +86,17 @@ export class Tab1Page {
 
   }
 
-  async openModal() {
+  async openModal(dataToEdit: any) {
     const modal = await this.modalCtrl.create({
       component: OrderFormComponent,
       initialBreakpoint: 1,
       breakpoints: [0.25, 0.5, 0.75, 1],
-      componentProps: { itemList: this.itemList.result }
+      componentProps: { itemList: this.itemList.result, dataToEdit: dataToEdit }
     });
     modal.present();
 
     const data = await modal.onWillDismiss();
-    if (data.role === 'confirm') {
+    if (data.role === 'new_Order') {
       console.log(data.data);
       // const user = await this.app.logIn(this.credentials);
       let result = await this.user.functions.insertOrdersData(data.data);
@@ -104,7 +106,27 @@ export class Tab1Page {
         this.sortOrderList();
         this.totalDayWise();
       }
+    }
 
+    if (data.role === 'updated_Order') {
+      console.log(data.data);
+      const id = { _id: data.data._id.toString() }
+      let result = await this.user.functions.updateSingleOrder(id, data.data);
+      console.log("Order Updated", result)
+      if (result.status) {
+
+        // Update the local copy of the order in your order list
+        const updatedOrder = data.data; // This is the updated order data from the model
+        const index = this.orderList.findIndex((order: any) => order.id === updatedOrder.id);
+
+        if (index !== -1) {
+          // Replace the old order data with the updated data
+          this.orderList[index] = updatedOrder;
+        }
+        console.log("updated OrderList", this.orderList)
+        this.sortOrderList();
+        this.totalDayWise();
+      }
     }
   }
 
@@ -114,7 +136,7 @@ export class Tab1Page {
     // Create a map to group orders by day
     const earningsMap = new Map<string, number>();
 
-    this.orderList.forEach((order:any) => {
+    this.allOrdersData.forEach((order: any) => {
       const date = new Date(order.created_At);
       const day = date.toISOString().split('T')[0]; // Get the date string in 'YYYY-MM-DD' format
 
@@ -139,6 +161,13 @@ export class Tab1Page {
 
   logout() {
     this.authService.logout();
+  }
+
+  editOrder(event: any) {
+    // console.log("order card event",event.arg1,event.arg2);
+    if (event.arg1 == "clicked") {
+      this.openModal(event.arg2);
+    }
   }
 
 }

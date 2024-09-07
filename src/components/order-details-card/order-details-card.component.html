@@ -3,7 +3,7 @@
     <ion-card-title>Order Summary</ion-card-title>
   </ion-card-header> -->
 
-  <ion-card-content>
+  <ion-card-content (click)="orderClicked('clicked',orderData)">
     <ion-item>
       <ion-label><strong>Customer Name:</strong></ion-label>
       <ion-label>{{ customerName }}</ion-label>
