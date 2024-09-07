@@ -8,10 +8,19 @@ import { Component } from '@angular/core';
 export class Tab3Page {
   earningsArray: { day: string, earning: number }[] = [];
   constructor() { }
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     const earningsData = localStorage.getItem('Earning_History');
+
     if (earningsData) {
       this.earningsArray = JSON.parse(earningsData);
+
+      // Sort the array by the latest date first
+      this.earningsArray.sort((a, b) => {
+        const dateA = new Date(a.day);
+        const dateB = new Date(b.day);
+        return dateB.getTime() - dateA.getTime(); // Sort latest first
+      });
+
       this.earningsArray.forEach(earning => {
         earning.day = this.formatDate(earning.day);
       });
