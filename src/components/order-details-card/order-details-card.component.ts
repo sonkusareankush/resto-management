@@ -12,6 +12,8 @@ export class OrderDetailsCardComponent  implements OnInit {
   @Input() discount: number = 0;
   @Input() orderData:any;
   @Output() dataEvent = new EventEmitter<{ arg1: string, arg2: any }>();
+  @Output() deleteEvent = new EventEmitter<{ arg1: any } >();
+
   constructor() { }
 
   ngOnInit() {}
@@ -19,6 +21,11 @@ export class OrderDetailsCardComponent  implements OnInit {
   orderClicked(event:any,data:any) {
     const arg = {arg1: event, arg2: data}
     this.dataEvent.emit(arg); // Emit event 
+  }
+  deleteOrder(data:any){
+    const arg = {arg1: data}
+    console.log('Delete button clicked');
+    this.deleteEvent.emit(arg)
   }
 
 }

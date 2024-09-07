@@ -24,7 +24,7 @@
     <app-order-details-card *ngFor="let order of orderList"  [orderData]="order" [customerName]="order.order_Data.customer_Name"
       [totalPriceBeforeDiscount]="order.total_Price_BeforeDiscount"
       [totalPriceAfterDiscount]="order.total_Price_AfterDiscount" [discount]="order.order_Data.discount"
-      (dataEvent)="editOrder($event)">
+      (dataEvent)="editOrder($event)" (deleteEvent)="confirmDelete($event)">
     </app-order-details-card>
   </div>
   </ng-container>

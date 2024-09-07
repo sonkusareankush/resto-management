@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import * as Realm from "realm-web";
 import { OrderFormComponent } from 'src/components/order-form/order-form.component';
 import { environment } from 'src/environments/environment';
@@ -19,7 +19,9 @@ export class Tab1Page {
   user: any;
   credentials: any;
   constructor(private modalCtrl: ModalController,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertCtrl: AlertController,
+
   ) {
     this.credentials = Realm.Credentials.anonymous();
     // this.user =  this.app.logIn(this.credentials);
@@ -57,12 +59,13 @@ export class Tab1Page {
     this.itemList = await this.user.functions.getItemsData();
     let orders = await this.user.functions.getOrdersData();
     this.allOrdersData = orders.result;
-    let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date());
-    // this.orderList = orders.result;//AllOrders
-    this.orderList = todaysOrders.result;
+    await this.getOrdersData();
+    // let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date());
+    // // this.orderList = orders.result;//AllOrders
+    // this.orderList = todaysOrders.result;
 
-    // console.log('All Orders',orders);
-    console.log('todaysOrders', todaysOrders);
+    // // console.log('All Orders',orders);
+    // console.log('todaysOrders', todaysOrders);
 
     this.sortOrderList();
     this.totalDayWise();
@@ -80,9 +83,9 @@ export class Tab1Page {
   }
 
   async getOrdersData() {
-    let orders = await this.user.functions.getOrdersData();
-    this.orderList = orders.result;
-    console.log(this.orderList);
+    let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date());
+    this.orderList = todaysOrders.result;
+    console.log('todaysOrders', todaysOrders);
 
   }
 
@@ -103,6 +106,7 @@ export class Tab1Page {
       console.log(result)
       if (result.success) {
         this.orderList.push(data.data);
+        await this.getOrdersData();
         this.sortOrderList();
         this.totalDayWise();
       }
@@ -169,5 +173,51 @@ export class Tab1Page {
       this.openModal(event.arg2);
     }
   }
+
+
+
+  async confirmDelete(event: any) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm Delete',
+      message: 'Are you sure you want to delete this Order?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Delete', handler: () => {
+            this.deleteOrder(event);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async deleteOrder(event: any) {
+    console.log(event)
+    const id = {  _id:event.arg1._id.toString()}
+
+    console.log(id);
+   const response =  await this.user.functions.deleteSingleOrder(id);
+     console.log(response)
+        if (response.status) {
+          this.showAlert('Success', 'Order deleted successfully.');
+          this.orderList = this.orderList.filter((order:any) => order.id !== event.arg1.id);
+        } else {
+          this.showAlert('Error', response.message);
+        }
+      }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
 
 }

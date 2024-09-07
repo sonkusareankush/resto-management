@@ -1,7 +1,15 @@
 <ion-card *ngIf="customerName">
-  <!-- <ion-card-header>
-    <ion-card-title>Order Summary</ion-card-title>
-  </ion-card-header> -->
+  <ion-card-header style="    align-items: end;
+">
+    <!-- <ion-card-title>Order Summary</ion-card-title> -->
+     <div>
+    <ion-buttons slot="end">
+      <ion-button (click)="deleteOrder(orderData)" color="danger" fill="clear">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </div>
+  </ion-card-header>
 
   <ion-card-content (click)="orderClicked('clicked',orderData)">
     <ion-item>
