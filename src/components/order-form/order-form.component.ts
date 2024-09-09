@@ -1,5 +1,5 @@
 import { Component, Input, input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -16,12 +16,16 @@ export class OrderFormComponent implements OnInit {
   totalPriceBeforeDiscount: number = 0;
   totalPriceAfterDiscount: number = 0;
   filteredItems: any[] = [];
+  backButtonSubscription: any; // to store back button subscription
 
 
-  constructor(private modalCtrl: ModalController) {
+  constructor(private modalCtrl: ModalController,
+    private platform: Platform // Add platform to handle back button
+
+  ) {
     this.orderForm = new FormGroup({
       customer_Name: new FormControl('New Customer', [Validators.required]),
-      items: new FormArray([],Validators.required),
+      items: new FormArray([], Validators.required),
       notes: new FormControl(''),
       discount: new FormControl(0, [Validators.min(0), Validators.max(100)])
     });
@@ -32,7 +36,7 @@ export class OrderFormComponent implements OnInit {
     // console.log(this.itemList);
     console.log(this.dataToEdit);
 
-        // If default values are provided, patch them to the form
+    // If default values are provided, patch them to the form
     if (this.dataToEdit) {
       this.orderForm.patchValue({
         customer_Name: this.dataToEdit.order_Data.customer_Name || '',
@@ -47,18 +51,30 @@ export class OrderFormComponent implements OnInit {
         });
       }
     }
-    else{
+    else {
       this.addItem();
     }
-// ///////////////////////////////////////////
- // Initialize filteredItems array with empty arrays for each form control
- this.filteredItems = this.items.controls.map(() => []);
+    // ///////////////////////////////////////////
+    // Initialize filteredItems array with empty arrays for each form control
+    this.filteredItems = this.items.controls.map(() => []);
 
-// ////////////////////////////////
+    // ////////////////////////////////
     // Watch for changes in the form to update the total price
     this.orderForm.valueChanges.subscribe(() => {
       this.calculateTotalPrice();
     });
+
+
+
+    // Subscribe to back button
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, async () => {
+      if (this.modalCtrl) {
+        console.log("model controller closed");
+
+        await this.modalCtrl.dismiss();
+      }
+    });
+
   }
 
 
@@ -117,8 +133,8 @@ export class OrderFormComponent implements OnInit {
   //   }
   // }
 
-   // Handle input and filter the available items based on the search query
-   onItemInput(index: number, event: any) {
+  // Handle input and filter the available items based on the search query
+  onItemInput(index: number, event: any) {
     const inputValue = event.target.value.toLowerCase();
     if (inputValue) {
       this.filteredItems[index] = this.itemList.filter((item: any) =>
@@ -150,7 +166,7 @@ export class OrderFormComponent implements OnInit {
       let data = {};
       if (this.dataToEdit) {
         data = {
-          _id:this.dataToEdit._id,
+          _id: this.dataToEdit._id,
           order_Data: orderData,
           id: this.dataToEdit.id,
           total_Price_BeforeDiscount: this.totalPriceBeforeDiscount,
@@ -158,10 +174,10 @@ export class OrderFormComponent implements OnInit {
           created_At: this.dataToEdit.created_At,
           updated_At: new Date()
         }
-        console.log("updatedData",data);
+        console.log("updatedData", data);
         this.modalCtrl.dismiss(data, 'updated_Order');
       }
-      else{
+      else {
         data = {
           order_Data: orderData,
           id: uuidv4(),
@@ -169,7 +185,7 @@ export class OrderFormComponent implements OnInit {
           total_Price_AfterDiscount: this.totalPriceAfterDiscount,
           created_At: new Date()
         }
-        console.log("newOrderData",data);
+        console.log("newOrderData", data);
         this.modalCtrl.dismiss(data, 'new_Order');
       }
 
@@ -179,4 +195,11 @@ export class OrderFormComponent implements OnInit {
     }
   }
 
+
+  ngOnDestroy() {
+    // Unsubscribe from back button when the component is destroyed
+    if (this.backButtonSubscription) {
+      this.backButtonSubscription.unsubscribe();
+    }
+  }
 }

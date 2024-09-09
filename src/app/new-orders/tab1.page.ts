@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { Component, ViewChild } from '@angular/core';
+import { AlertController, IonRouterOutlet, ModalController, Platform } from '@ionic/angular';
 import * as Realm from "realm-web";
 import { OrderFormComponent } from 'src/components/order-form/order-form.component';
 import { environment } from 'src/environments/environment';
@@ -11,19 +11,20 @@ import { AuthService } from 'src/services/auth.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  // Add your App ID
   env = environment.production;
   itemList: any = [];
   orderList: any = [];
   allOrdersData: any = [];
   user: any;
   credentials: any;
+  modal: any; // to reference the current modal
+
   constructor(private modalCtrl: ModalController,
     private authService: AuthService,
     private alertCtrl: AlertController,
 
   ) {
-    this.credentials = Realm.Credentials.anonymous();
+    // this.credentials = Realm.Credentials.anonymous();
     // this.user =  this.app.logIn(this.credentials);
 
   }
@@ -38,7 +39,6 @@ export class Tab1Page {
 
     // this.user = await this.authService.user;
     // console.log(this.user)
-
   }
   async ionViewWillEnter() {
     // this.getItems();

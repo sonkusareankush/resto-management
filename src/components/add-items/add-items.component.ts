@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { AuthService } from 'src/services/auth.service';
 
@@ -11,12 +11,15 @@ import { AuthService } from 'src/services/auth.service';
 export class AddItemsComponent implements OnInit {
   itemsForm!: FormGroup;
   user: any;
+  backButtonSubscription: any; // to store back button subscription
 
 
   constructor(private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private fb: FormBuilder,
     private authService: AuthService,
+    private platform: Platform // Add platform to handle back button
+
   ) {
 
 
@@ -30,6 +33,14 @@ export class AddItemsComponent implements OnInit {
     console.log(this.user);
     if (this.user) {
     }
+    // Subscribe to back button
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, async () => {
+      if (this.modalCtrl) {
+        console.log("model controller closed");
+
+        await this.modalCtrl.dismiss();
+      }
+    });
   }
 
   get items(): FormArray {
@@ -87,6 +98,13 @@ export class AddItemsComponent implements OnInit {
 
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe from back button when the component is destroyed
+    if (this.backButtonSubscription) {
+      this.backButtonSubscription.unsubscribe();
+    }
   }
 
 }
