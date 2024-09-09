@@ -23,16 +23,17 @@
         </ion-text>
 
         <!-- Login Form -->
-        <form (submit)="login()">
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <span class="error" *ngIf="error">ID or Password is Incorrect</span>
           <ion-item>
             <ion-label>ID</ion-label>
-            <ion-input class="input-txt" [(ngModel)]="email" type="email" name="email" required></ion-input>
+            <ion-input class="input-txt" formControlName="email" type="email"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label>Password</ion-label>
-            <ion-input class="input-txt" [(ngModel)]="password" type="password" name="password" required></ion-input>
+            <ion-input  class="input-txt" formControlName="password" type="password"></ion-input>
           </ion-item>
-          <ion-button type="submit" expand="full">Login</ion-button>
+          <ion-button type="submit" expand="full" [disabled]="loginForm.invalid">Login</ion-button>
         </form>
       </ion-col>
     </ion-row>
