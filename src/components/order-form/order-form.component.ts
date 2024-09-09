@@ -19,7 +19,7 @@ export class OrderFormComponent implements OnInit {
   constructor(private modalCtrl: ModalController) {
     this.orderForm = new FormGroup({
       customer_Name: new FormControl('New Customer', [Validators.required]),
-      items: new FormArray([]),
+      items: new FormArray([],Validators.required),
       notes: new FormControl(''),
       discount: new FormControl(0, [Validators.min(0), Validators.max(100)])
     });

@@ -89,7 +89,7 @@ export class Tab2Page {
   async openModal() {
     const modal = await this.modalCtrl.create({
       component: AddItemsComponent,
-      initialBreakpoint: 1,
+      initialBreakpoint: 0.5,
       breakpoints: [0.25, 0.5, 0.75, 1],
       // componentProps: { data:data }
     });
