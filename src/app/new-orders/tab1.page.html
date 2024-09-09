@@ -14,21 +14,23 @@
   </ion-toolbar>
 </ion-header> -->
 
-<ion-content  [fullscreen]="true">
+<ion-content [fullscreen]="true">
   <!-- <ion-title style="text-align: center;margin-top: 13%;">
     New Order
   </ion-title> -->
-  <ng-container *ngIf="orderList.length > 0">
-    <div style="    margin-top: 13%;
-">
-    <app-order-details-card *ngFor="let order of orderList; let i = index"  [orderData]="order"  [totalOrders]="orderList.length"
-      [index]= 'i'
-      (dataEvent)="editOrder($event)" (deleteEvent)="confirmDelete($event)">
-    </app-order-details-card>
-  </div>
+  <ng-container *ngIf="orderList.length > 0 else noOrders">
+    <div class="layout">
+      <app-order-details-card *ngFor="let order of orderList; let i = index" [orderData]="order"
+        [totalOrders]="orderList.length" [index]='i' (dataEvent)="editOrder($event)"
+        (deleteEvent)="confirmDelete($event)">
+      </app-order-details-card>
+    </div>
   </ng-container>
+  <ng-template #noOrders>
+    No Orders for Today Start adding Orders
+  </ng-template>
 </ion-content>
-<ion-fab  vertical="bottom" horizontal="end" slot="fixed">
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
   <ion-fab-button (click)="openModal(null)" color="primary">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
