@@ -15,6 +15,8 @@ export class OrderFormComponent implements OnInit {
   orderForm: FormGroup;
   totalPriceBeforeDiscount: number = 0;
   totalPriceAfterDiscount: number = 0;
+  filteredItems: any[] = [];
+
 
   constructor(private modalCtrl: ModalController) {
     this.orderForm = new FormGroup({
@@ -49,6 +51,10 @@ export class OrderFormComponent implements OnInit {
       this.addItem();
     }
 // ///////////////////////////////////////////
+ // Initialize filteredItems array with empty arrays for each form control
+ this.filteredItems = this.items.controls.map(() => []);
+
+// ////////////////////////////////
     // Watch for changes in the form to update the total price
     this.orderForm.valueChanges.subscribe(() => {
       this.calculateTotalPrice();
@@ -68,6 +74,9 @@ export class OrderFormComponent implements OnInit {
       quantity: new FormControl(1, [Validators.required, Validators.min(1)])
     });
     this.items.push(itemGroup);
+
+    // Add an empty array for filtered items for this new item control
+    this.filteredItems.push([]);
   }
 
   addItemWithValues(item: any) {
@@ -77,11 +86,13 @@ export class OrderFormComponent implements OnInit {
       quantity: new FormControl(item.quantity, [Validators.required, Validators.min(1)])
     });
     this.items.push(itemGroup);
+    this.filteredItems.push([]);
     this.calculateTotalPrice();
   }
 
   removeItem(index: number) {
     this.items.removeAt(index);
+    this.filteredItems.splice(index, 1); // Remove corresponding filtered items
     this.calculateTotalPrice(); // Update total price after removing an item
 
   }
@@ -96,15 +107,36 @@ export class OrderFormComponent implements OnInit {
     this.totalPriceAfterDiscount = this.totalPriceBeforeDiscount * (1 - discount / 100);
   }
 
-  onItemSelected(index: number) {
-    const selectedItem = this.itemList.find(
-      (item: { item_name: any; }) => item.item_name === this.items.at(index).get('item_name')?.value
-    );
-    if (selectedItem) {
-      this.items.at(index).get('item_price')?.setValue(selectedItem.item_price);
-      this.calculateTotalPrice(); // Update total price when item changes
+  // onItemSelected(index: number) {
+  //   const selectedItem = this.itemList.find(
+  //     (item: { item_name: any; }) => item.item_name === this.items.at(index).get('item_name')?.value
+  //   );
+  //   if (selectedItem) {
+  //     this.items.at(index).get('item_price')?.setValue(selectedItem.item_price);
+  //     this.calculateTotalPrice(); // Update total price when item changes
+  //   }
+  // }
+
+   // Handle input and filter the available items based on the search query
+   onItemInput(index: number, event: any) {
+    const inputValue = event.target.value.toLowerCase();
+    if (inputValue) {
+      this.filteredItems[index] = this.itemList.filter((item: any) =>
+        item.item_name.toLowerCase().includes(inputValue)
+      );
+    } else {
+      this.filteredItems[index] = [];
     }
   }
+
+  // Select an item from the suggestions list
+  selectItem(index: number, selectedItem: any) {
+    this.items.at(index).get('item_name')?.setValue(selectedItem.item_name);
+    this.items.at(index).get('item_price')?.setValue(selectedItem.item_price);
+    this.filteredItems[index] = []; // Clear the suggestions after selection
+    this.calculateTotalPrice();
+  }
+
 
 
   cancel() {

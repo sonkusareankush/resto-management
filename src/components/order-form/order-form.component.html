@@ -19,7 +19,7 @@
 
 
     <ion-list>
-      <ion-item-group formArrayName="items">
+      <!-- <ion-item-group formArrayName="items">
         <ion-item *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
           <ion-label position="floating">Select Item</ion-label>
           <ion-select formControlName="item_name"  (ionChange)="onItemSelected(i)">
@@ -34,7 +34,42 @@
           <ion-input formControlName="quantity" type="number"></ion-input>
           <ion-button color="danger" (click)="removeItem(i)">Remove</ion-button>
         </ion-item>
+      </ion-item-group> -->
+
+      <ion-item-group formArrayName="items">
+        <ion-item *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+          
+          <!-- Input field for selecting an item with autocomplete -->
+          <ion-label position="floating">Select Item</ion-label>
+          <ion-input 
+            class="item-name"
+            formControlName="item_name" 
+            type="text"
+            (ionInput)="onItemInput(i, $event)">
+          </ion-input>
+          
+          <!-- Autocomplete dropdown for matching items -->
+          <ion-list *ngIf="filteredItems[i].length > 0">
+            <ion-item 
+              *ngFor="let suggestion of filteredItems[i]" 
+              (click)="selectItem(i, suggestion)">
+              {{ suggestion.item_name }} {{ suggestion.item_price | currency:"INR" }}
+            </ion-item>
+          </ion-list>
+      
+          <!-- Input for Price (auto-filled) -->
+          <ion-label position="floating">Price</ion-label>
+          <ion-input formControlName="item_price" type="number" readonly></ion-input>
+      
+          <!-- Input for Quantity -->
+          <ion-label position="floating">Quantity</ion-label>
+          <ion-input formControlName="quantity" type="number"></ion-input>
+      
+          <!-- Button to remove an item -->
+          <ion-button color="danger" (click)="removeItem(i)">Remove</ion-button>
+        </ion-item>
       </ion-item-group>
+      
     </ion-list>
 
 
