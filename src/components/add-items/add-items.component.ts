@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController, Platform } from '@ionic/angular';
+import { AlertController, ModalController} from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { AuthService } from 'src/services/auth.service';
+import { CommenService } from 'src/services/commen.service';
 
 @Component({
   selector: 'app-add-items',
@@ -18,12 +19,8 @@ export class AddItemsComponent implements OnInit {
     private alertCtrl: AlertController,
     private fb: FormBuilder,
     private authService: AuthService,
-    private platform: Platform // Add platform to handle back button
-
-  ) {
-
-
-  }
+    private loaderService:CommenService
+  ) {}
 
   async ngOnInit() {
     this.itemsForm = this.fb.group({
@@ -33,14 +30,6 @@ export class AddItemsComponent implements OnInit {
     console.log(this.user);
     if (this.user) {
     }
-    // Subscribe to back button
-    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, async () => {
-      if (this.modalCtrl) {
-        console.log("model controller closed");
-
-        await this.modalCtrl.dismiss();
-      }
-    });
   }
 
   get items(): FormArray {
@@ -69,20 +58,21 @@ export class AddItemsComponent implements OnInit {
       await this.showAlert('Error', 'Please fill out all required fields correctly.');
       return;
     }
+    this.loaderService.showLoader();
     console.log(this.itemsForm.value.items)
     const response = await this.user.functions.addItemsData(this.itemsForm.value.items);
 
-
     if (response.success) {
+      this.loaderService.stopLoader(true);
       await this.showAlert('Success', 'Items added successfully.');
       this.modalCtrl.dismiss(response, 'confirm');
       this.itemsForm.reset();
       this.items.clear();
       this.addItem(); // Add one empty form after clearing
     } else {
+      this.loaderService.stopLoader(true);
       await this.showAlert('Error', response.error);
     }
-
   }
 
 
@@ -98,13 +88,6 @@ export class AddItemsComponent implements OnInit {
 
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
-  }
-
-  ngOnDestroy() {
-    // Unsubscribe from back button when the component is destroyed
-    if (this.backButtonSubscription) {
-      this.backButtonSubscription.unsubscribe();
-    }
   }
 
 }

@@ -4,6 +4,7 @@ import * as Realm from "realm-web";
 import { OrderFormComponent } from 'src/components/order-form/order-form.component';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/services/auth.service';
+import { CommenService } from 'src/services/commen.service';
 
 @Component({
   selector: 'app-tab1',
@@ -22,6 +23,7 @@ export class Tab1Page {
   constructor(private modalCtrl: ModalController,
     private authService: AuthService,
     private alertCtrl: AlertController,
+    private loaderService:CommenService
 
   ) {
     // this.credentials = Realm.Credentials.anonymous();
@@ -50,6 +52,7 @@ export class Tab1Page {
   }
 
   async getItems() {
+    this.loaderService.showLoader();
     // Create an anonymous credential
     // const credentials = Realm.Credentials.anonymous();
 
@@ -74,7 +77,7 @@ export class Tab1Page {
 
     console.log(this.itemList);
 
-
+    this.loaderService.stopLoader();
   }
   sortOrderList() {
     this.orderList.sort((a: { created_At: string | number | Date; }, b: { created_At: string | number | Date; }) => {
@@ -100,6 +103,7 @@ export class Tab1Page {
 
     const data = await modal.onWillDismiss();
     if (data.role === 'new_Order') {
+      this.loaderService.showLoader();
       console.log(data.data);
       // const user = await this.app.logIn(this.credentials);
       let result = await this.user.functions.insertOrdersData(data.data);
@@ -109,10 +113,11 @@ export class Tab1Page {
         await this.getOrdersData();
         this.sortOrderList();
         this.totalDayWise();
-      }
+      }      
     }
 
     if (data.role === 'updated_Order') {
+      this.loaderService.showLoader();
       console.log(data.data);
       const id = { _id: data.data._id.toString() }
       let result = await this.user.functions.updateSingleOrder(id, data.data);
@@ -132,6 +137,7 @@ export class Tab1Page {
         this.totalDayWise();
       }
     }
+    this.loaderService.stopLoader();
   }
 
 
@@ -196,16 +202,19 @@ export class Tab1Page {
   }
 
   async deleteOrder(event: any) {
+    this.loaderService.showLoader();
     console.log(event)
     const id = {  _id:event.arg1._id.toString()}
 
     console.log(id);
    const response =  await this.user.functions.deleteSingleOrder(id);
-     console.log(response)
+     console.log(response);
         if (response.status) {
+          this.loaderService.stopLoader(true);
           this.showAlert('Success', 'Order deleted successfully.');
           this.orderList = this.orderList.filter((order:any) => order.id !== event.arg1.id);
         } else {
+          this.loaderService.stopLoader(true);
           this.showAlert('Error', response.message);
         }
       }

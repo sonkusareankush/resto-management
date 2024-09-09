@@ -4,24 +4,16 @@
      Order Status
     </ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
-<ion-content [fullscreen]="true">
-  <p> Order Status</p>
-  </ion-content> -->
-  <!-- <ion-header>
-    <ion-toolbar>
-      <ion-title>Delete Items</ion-title>
-    </ion-toolbar>
-  </ion-header> -->
+
+
+<ion-content>
+  <app-manage-items></app-manage-items>
+</ion-content>
   
-  <ion-content >
-    <!-- <ion-title style="text-align: center;margin-top: 13%;">
-      Delete Items</ion-title> -->
-
-    <ion-list style="      top: 6%;
-  position: relative;
-    ">
+  <!-- <ion-content >
+    <ion-list class="layout">
       <ion-item *ngFor="let item of itemList">
         <ion-label>
           <h2>{{ item.item_name }}</h2>
@@ -39,4 +31,4 @@
     <ion-fab-button (click)="openModal()" color="primary">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->

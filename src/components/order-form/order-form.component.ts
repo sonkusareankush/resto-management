@@ -1,7 +1,8 @@
 import { Component, Input, input, OnInit } from '@angular/core';
-import { ModalController, Platform } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
+import { CommenService } from 'src/services/commen.service';
 
 
 @Component({
@@ -20,8 +21,7 @@ export class OrderFormComponent implements OnInit {
 
 
   constructor(private modalCtrl: ModalController,
-    private platform: Platform // Add platform to handle back button
-
+    private loaderService:CommenService
   ) {
     this.orderForm = new FormGroup({
       customer_Name: new FormControl('New Customer', [Validators.required]),
@@ -62,17 +62,6 @@ export class OrderFormComponent implements OnInit {
     // Watch for changes in the form to update the total price
     this.orderForm.valueChanges.subscribe(() => {
       this.calculateTotalPrice();
-    });
-
-
-
-    // Subscribe to back button
-    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, async () => {
-      if (this.modalCtrl) {
-        console.log("model controller closed");
-
-        await this.modalCtrl.dismiss();
-      }
     });
 
   }
@@ -192,14 +181,6 @@ export class OrderFormComponent implements OnInit {
 
     } else {
       console.log('Form is invalid');
-    }
-  }
-
-
-  ngOnDestroy() {
-    // Unsubscribe from back button when the component is destroyed
-    if (this.backButtonSubscription) {
-      this.backButtonSubscription.unsubscribe();
     }
   }
 }
