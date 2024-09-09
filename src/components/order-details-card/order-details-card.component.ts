@@ -6,10 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./order-details-card.component.scss'],
 })
 export class OrderDetailsCardComponent  implements OnInit {
-  @Input() customerName: string = '';
-  @Input() totalPriceBeforeDiscount: number = 0;
-  @Input() totalPriceAfterDiscount: number = 0;
-  @Input() discount: number = 0;
+  @Input() totalOrders: number = 0;
   @Input() orderData:any;
   @Input() index:any;
   @Output() dataEvent = new EventEmitter<{ arg1: string, arg2: any }>();

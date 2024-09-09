@@ -4,9 +4,6 @@
       <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
     </ion-buttons>
     <ion-title >Order Form</ion-title>
-    <!-- <ion-buttons slot="end">
-      <ion-button (click)="onSubmit()" [strong]="true">Submit Order</ion-button>
-    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
@@ -19,23 +16,6 @@
 
 
     <ion-list>
-      <!-- <ion-item-group formArrayName="items">
-        <ion-item *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
-          <ion-label position="floating">Select Item</ion-label>
-          <ion-select formControlName="item_name"  (ionChange)="onItemSelected(i)">
-            <ion-select-option *ngFor="let availableItem of itemList" [value]="availableItem.item_name">
-              {{ availableItem.item_name }} {{availableItem.item_price | currency:"INR"}}
-            </ion-select-option>
-          </ion-select>
-          <ion-label position="floating">Price</ion-label>
-          <ion-input formControlName="item_price" type="number" readonly></ion-input>
-          
-          <ion-label position="floating">Quantity</ion-label>
-          <ion-input formControlName="quantity" type="number"></ion-input>
-          <ion-button color="danger" (click)="removeItem(i)">Remove</ion-button>
-        </ion-item>
-      </ion-item-group> -->
-
       <ion-item-group formArrayName="items">
         <ion-item *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
           
@@ -49,7 +29,7 @@
           </ion-input>
           
           <!-- Autocomplete dropdown for matching items -->
-          <ion-list *ngIf="filteredItems[i].length > 0">
+          <ion-list *ngIf="filteredItems[i].length > 0" class="dropdown">
             <ion-item 
               *ngFor="let suggestion of filteredItems[i]" 
               (click)="selectItem(i, suggestion)">

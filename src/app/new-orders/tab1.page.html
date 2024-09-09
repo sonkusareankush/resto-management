@@ -21,9 +21,7 @@
   <ng-container *ngIf="orderList.length > 0">
     <div style="    margin-top: 13%;
 ">
-    <app-order-details-card *ngFor="let order of orderList; let i = index"  [orderData]="order" [customerName]="order.order_Data.customer_Name"
-      [totalPriceBeforeDiscount]="order.total_Price_BeforeDiscount"
-      [totalPriceAfterDiscount]="order.total_Price_AfterDiscount" [discount]="order.order_Data.discount"
+    <app-order-details-card *ngFor="let order of orderList; let i = index"  [orderData]="order"  [totalOrders]="orderList.length"
       [index]= 'i'
       (dataEvent)="editOrder($event)" (deleteEvent)="confirmDelete($event)">
     </app-order-details-card>
