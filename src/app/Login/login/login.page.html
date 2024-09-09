@@ -1,11 +1,40 @@
-<form (submit)="login()">
+<!-- <form (submit)="login()">
   <ion-item>
     <ion-label>ID</ion-label>
-    <ion-input [(ngModel)]="email" type="email" name="email" required></ion-input>
+    <ion-input class="input-txt" [(ngModel)]="email" type="email" name="email" required></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Password</ion-label>
-    <ion-input [(ngModel)]="password" type="password" name="password" required></ion-input>
+    <ion-input class="input-txt" [(ngModel)]="password" type="password" name="password" required></ion-input>
   </ion-item>
   <ion-button type="submit" expand="full">Login</ion-button>
-</form>
+</form> -->
+<ion-content>
+  <ion-grid class="login-container">
+    <ion-row class="ion-justify-content-center ion-align-items-center">
+      <ion-col size-md="6" size-sm="12" class="ion-text-center">
+
+        <!-- Logo -->
+        <img src="assets/logo.png" alt="Logo" class="logo" />
+
+        <!-- Heading -->
+        <ion-text color="primary">
+          <h1 class="app-heading">Kastkaar</h1>
+        </ion-text>
+
+        <!-- Login Form -->
+        <form (submit)="login()">
+          <ion-item>
+            <ion-label>ID</ion-label>
+            <ion-input class="input-txt" [(ngModel)]="email" type="email" name="email" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Password</ion-label>
+            <ion-input class="input-txt" [(ngModel)]="password" type="password" name="password" required></ion-input>
+          </ion-item>
+          <ion-button type="submit" expand="full">Login</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

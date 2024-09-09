@@ -1,10 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title style="text-align: center;" class="kastkaar-title">
-      Kastkaar
-    </ion-title>
+    <div class="logo-head">
+      <ion-buttons slot="start">
+        <img src="assets/logo.png" alt="Logo" class="logo-circle">
+      </ion-buttons>
 
-    <ion-button class="header"  size="small" fill="outline" (click)="logout()"><ion-icon name="log-out-outline"></ion-icon></ion-button>
+      <ion-title style="text-align: center;" class="kastkaar-title">
+        Kastkaar
+      </ion-title>
+    </div>
+
+    <ion-button class="header" size="small" fill="outline" (click)="logout()"><ion-icon
+        name="log-out-outline"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-header>
 <ion-tabs>
@@ -15,7 +22,7 @@
     </ion-tab-button>
 
     <ion-tab-button tab="tab2" href="/tabs/tab2">
-      <ion-icon aria-hidden="true" name="alarm-outline"></ion-icon> 
+      <ion-icon aria-hidden="true" name="alarm-outline"></ion-icon>
     </ion-tab-button>
 
     <ion-tab-button tab="tab3" href="/tabs/tab3">

@@ -1,12 +1,32 @@
-
-.header{
-    float:right;
+.header {
+    float: right;
     padding-right: 2%;
     background: white;
 }
-.kastkaar-title{
+
+.kastkaar-title {
     display: inline-flex;
     justify-content: center;
     position: relative;
-    top: 15px;
+    top: 1%;
+
+    padding-left: 2%;
+    font-size: xx-large;
+}
+
+.logo-head {
+    display: inline-flex;
+}
+
+.logo-circle {
+    width: 40px;
+    /* Adjust size as needed */
+    height: 40px;
+    /* Make height equal to width for circle */
+    border-radius: 50%;
+    /* Circular shape */
+    object-fit: cover;
+    /* Make sure the image scales correctly */
+    margin-left: 10px;
+    /* Optional: add margin to separate it from title */
 }
