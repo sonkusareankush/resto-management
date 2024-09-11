@@ -24,7 +24,7 @@ export class CommenService {
     else{
       setTimeout(()=>{
         this.loader.dismiss();
-      },1000)  
+      },1500)  
     }
     
   }

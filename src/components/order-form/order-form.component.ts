@@ -183,4 +183,27 @@ export class OrderFormComponent implements OnInit {
       console.log('Form is invalid');
     }
   }
+
+  // Method to decrease quantity
+decreaseQuantity(index: number) {
+  const currentQuantity = this.items.at(index).get('quantity')?.value;
+  if (currentQuantity > 1) {
+    this.items.at(index).get('quantity')?.setValue(currentQuantity - 1);
+    this.calculateTotalPrice(); // Update the total price after changing quantity
+  }
+}
+
+// Method to increase quantity
+increaseQuantity(index: number) {
+  const currentQuantity = this.items.at(index).get('quantity')?.value;
+  this.items.at(index).get('quantity')?.setValue(currentQuantity + 1);
+  this.calculateTotalPrice(); // Update the total price after changing quantity
+}
+
+// Method to calculate total price for an item (price * quantity)
+getItemTotalPrice(index: number): number {
+  const item = this.items.at(index).value;
+  return item.item_price * item.quantity;
+}
+
 }
