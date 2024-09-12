@@ -27,7 +27,7 @@
           <!-- Autocomplete dropdown for matching items -->
           <ion-list *ngIf="filteredItems[i].length > 0" class="dropdown">
             <ion-item *ngFor="let suggestion of filteredItems[i]" (click)="selectItem(i, suggestion)">
-              {{ suggestion.item_name }} {{ suggestion.item_price | currency:"INR" }}
+              {{ suggestion.item_name | titlecase }} {{ suggestion.item_price | currency:"INR" }}
             </ion-item>
           </ion-list>
 

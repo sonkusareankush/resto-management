@@ -5,9 +5,9 @@
   <ion-list class="layout">
     <ion-item *ngFor="let item of itemList">
       <ion-label>
-        <h2>{{ item.item_name }}</h2>
+        <h2>{{ item.item_name | titlecase }}</h2>
         <p>Price: {{ item.item_price }}</p>
-        <p>Section: {{ item.item_section }}</p>
+        <p>Section: {{ item.item_section | titlecase}}</p>
       </ion-label>
       <ion-button color="danger" (click)="confirmDelete(item._id)">
         Delete

@@ -55,7 +55,7 @@ export class AddItemsComponent implements OnInit {
 
   async submitForm() {
     if (this.itemsForm.invalid) {
-      await this.showAlert('Error', 'Please fill out all required fields correctly.');
+      await this.loaderService.presentAlert('Error', 'Please fill out all required fields correctly.');
       return;
     }
     this.loaderService.showLoader();
@@ -64,14 +64,14 @@ export class AddItemsComponent implements OnInit {
 
     if (response.success) {
       this.loaderService.stopLoader(true);
-      await this.showAlert('Success', 'Items added successfully.');
+      await this.loaderService.presentAlert('Success', 'Items added successfully.');
       this.modalCtrl.dismiss(response, 'confirm');
       this.itemsForm.reset();
       this.items.clear();
       this.addItem(); // Add one empty form after clearing
     } else {
       this.loaderService.stopLoader(true);
-      await this.showAlert('Error', response.error);
+      await this.loaderService.presentAlert('Error', response.error);
     }
   }
 

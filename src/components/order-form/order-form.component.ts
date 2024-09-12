@@ -21,7 +21,7 @@ export class OrderFormComponent implements OnInit {
 
 
   constructor(private modalCtrl: ModalController,
-    private loaderService:CommenService
+    private CommenService:CommenService
   ) {
     this.orderForm = new FormGroup({
       customer_Name: new FormControl('New Customer', [Validators.required]),
@@ -85,8 +85,10 @@ export class OrderFormComponent implements OnInit {
   }
 
   addItemWithValues(item: any) {
+    const name = this.CommenService.toTitleCase(item.item_name);
+
     const itemGroup = new FormGroup({
-      item_name: new FormControl(item.item_name, [Validators.required]),
+      item_name: new FormControl(name, [Validators.required]),
       item_price: new FormControl(item.item_price, [Validators.required, Validators.min(0)]),
       quantity: new FormControl(item.quantity, [Validators.required, Validators.min(1)])
     });
@@ -136,7 +138,8 @@ export class OrderFormComponent implements OnInit {
 
   // Select an item from the suggestions list
   selectItem(index: number, selectedItem: any) {
-    this.items.at(index).get('item_name')?.setValue(selectedItem.item_name);
+    const name = this.CommenService.toTitleCase(selectedItem.item_name);
+    this.items.at(index).get('item_name')?.setValue(name);
     this.items.at(index).get('item_price')?.setValue(selectedItem.item_price);
     this.filteredItems[index] = []; // Clear the suggestions after selection
     this.calculateTotalPrice();
@@ -161,7 +164,8 @@ export class OrderFormComponent implements OnInit {
           total_Price_BeforeDiscount: this.totalPriceBeforeDiscount,
           total_Price_AfterDiscount: this.totalPriceAfterDiscount,
           created_At: this.dataToEdit.created_At,
-          updated_At: new Date()
+          updated_At: new Date(),
+          payment_mode: this.dataToEdit.payment_mode
         }
         console.log("updatedData", data);
         this.modalCtrl.dismiss(data, 'updated_Order');
