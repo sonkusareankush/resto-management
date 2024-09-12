@@ -172,7 +172,8 @@ export class OrderFormComponent implements OnInit {
           id: uuidv4(),
           total_Price_BeforeDiscount: this.totalPriceBeforeDiscount,
           total_Price_AfterDiscount: this.totalPriceAfterDiscount,
-          created_At: new Date()
+          created_At: new Date(),
+          payment_mode: 'cash'
         }
         console.log("newOrderData", data);
         this.modalCtrl.dismiss(data, 'new_Order');
