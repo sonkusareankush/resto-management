@@ -18,7 +18,7 @@
   <!-- <ion-title style="text-align: center;margin-top: 13%;">
     New Order
   </ion-title> -->
-  <ng-container *ngIf="orderList.length > 0 else noOrders">
+  <ng-container *ngIf="orderList.length > 0; else noOrders">
     <div class="layout">
       <app-order-details-card *ngFor="let order of orderList; let i = index" [orderData]="order"
         [totalOrders]="orderList.length" [index]='i' (dataEvent)="editOrder($event)"
@@ -27,7 +27,8 @@
     </div>
   </ng-container>
   <ng-template #noOrders>
-    No Orders for Today Start Adding Orders
+
+    <div style="position: relative;top: 50%; text-align: center;">"No orders for today. Start adding new ones!"</div>
   </ng-template>
 </ion-content>
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">

@@ -94,6 +94,7 @@ export class Tab1Page {
     let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date());
     this.orderList = todaysOrders.result;
     console.log('todaysOrders', todaysOrders);
+
   }
 
   async openModal(dataToEdit: any) {
