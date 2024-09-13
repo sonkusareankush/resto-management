@@ -5,6 +5,8 @@ import { OrderFormComponent } from 'src/components/order-form/order-form.compone
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/services/auth.service';
 import { CommenService } from 'src/services/commen.service';
+import { ItemsService } from 'src/services/items.service';
+import { OrdersDataService } from 'src/services/orders-data.service'
 
 @Component({
   selector: 'app-tab1',
@@ -15,7 +17,7 @@ export class Tab1Page {
   env = environment.production;
   itemList: any = [];
   orderList: any = [];
-  allOrdersData: any = [];
+  // allOrdersData: any = [];
   user: any;
   credentials: any;
   modal: any; // to reference the current modal
@@ -23,7 +25,9 @@ export class Tab1Page {
   constructor(private modalCtrl: ModalController,
     private authService: AuthService,
     private alertCtrl: AlertController,
-    private commenService:CommenService
+    private commenService:CommenService,
+    private OrdersDataService:OrdersDataService,
+    private items:ItemsService
 
   ) {
     // this.credentials = Realm.Credentials.anonymous();
@@ -60,21 +64,13 @@ export class Tab1Page {
     // `App.currentUser` updates to match the logged in user
     console.assert(this.user.id === this.app.currentUser.id);
     await this.getOrdersData();
-    this.itemList = await this.user.functions.getItemsData();
-    let orders = await this.user.functions.getOrdersData();
-    this.allOrdersData = orders.result;
-    // let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date());
-    // // this.orderList = orders.result;//AllOrders
-    // this.orderList = todaysOrders.result;
-
-    // // console.log('All Orders',orders);
-    // console.log('todaysOrders', todaysOrders);
+    this.itemList = await this.items.getItems();//this.user.functions.getItemsData();
+    // let orders = await this.OrdersDataService.getAllOrdersData();//this.user.functions.getOrdersData();
+    // this.allOrdersData = await orders.result;
+    //   console.log(this.allOrdersData);
 
     this.sortOrderList();
-    this.totalDayWise();
-
-
-
+    // this.OrdersDataService.totalDayWise(this.allOrdersData);
     console.log(this.itemList);
     }
     catch(error){
@@ -91,9 +87,9 @@ export class Tab1Page {
   }
 
   async getOrdersData() {
-    let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date());
-    this.orderList = todaysOrders.result;
-    console.log('todaysOrders', todaysOrders);
+    // let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date());
+    this.orderList =await this.OrdersDataService.getOrdersData();
+    // console.log('todaysOrders',  this.orderList);
 
   }
 
@@ -117,7 +113,7 @@ export class Tab1Page {
         this.orderList.push(data.data);
         await this.getOrdersData();
         this.sortOrderList();
-        this.totalDayWise();
+        // this.OrdersDataService.totalDayWise(this.allOrdersData);
         this.commenService.presentToast('success')
       }     
       else{
@@ -143,7 +139,7 @@ export class Tab1Page {
         }
         console.log("updated OrderList", this.orderList)
         this.sortOrderList();
-        this.totalDayWise();
+        // this.OrdersDataService.totalDayWise(this.allOrdersData);
         this.commenService.presentToast('success')
       }
       else{
@@ -154,33 +150,7 @@ export class Tab1Page {
   }
 
 
-  totalDayWise() {
 
-    // Create a map to group orders by day
-    const earningsMap = new Map<string, number>();
-
-    this.allOrdersData.forEach((order: any) => {
-      const date = new Date(order.created_At);
-      const day = date.toISOString().split('T')[0]; // Get the date string in 'YYYY-MM-DD' format
-
-      // Calculate the sum of total_Price_AfterDiscount for each day
-      if (earningsMap.has(day)) {
-        earningsMap.set(day, earningsMap.get(day)! + order.total_Price_AfterDiscount);
-      } else {
-        earningsMap.set(day, order.total_Price_AfterDiscount);
-      }
-    });
-
-    // Convert the map into an array of objects in the desired format
-    const earningsArray = Array.from(earningsMap.entries()).map(([day, earning]) => ({
-      day,
-      earning
-    }));
-
-    console.log(earningsArray);
-    localStorage.setItem('Earning_History', JSON.stringify(earningsArray));
-
-  }
 
   editOrder(event: any) {
     // console.log("order card event",event.arg1,event.arg2);

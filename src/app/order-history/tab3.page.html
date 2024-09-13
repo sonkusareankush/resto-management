@@ -11,7 +11,9 @@
     <ion-item *ngFor="let earning of earningsArray">
       <ion-label>
         <h2>{{ earning.day }}</h2>
-        <p>Earnings: ₹{{ earning.earning }}</p>
+        <!-- <p>Earnings: ₹{{ earning.earning }}</p> -->
+        <p>Cash Earning: ₹{{earning.cashEarning}}</p>
+        <p>E-Payment: ₹{{earning.onlineEarning}}</p>
       </ion-label>
     </ion-item>
   </ion-list>
