@@ -9,10 +9,10 @@ export class ItemsService {
   user: any;
   constructor(private authService:AuthService,
     private loaderService:CommenService) { 
-      this.user = this.authService.user;
     }
 
     async getItems(){
+      this.user = this.authService.user;
       let result =await this.user.functions.getItemsData();
       return result;
     }

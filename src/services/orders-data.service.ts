@@ -9,21 +9,23 @@ export class OrdersDataService {
   user: any;
   constructor(private authService:AuthService,
     private loaderService:CommenService) { 
-      this.user = this.authService.user;
     }
 
     async getOrdersData() {
+      this.user = this.authService.user;
       let todaysOrders = await this.user.functions.getTodaysOrdersData(new Date());
       console.log('todaysOrders', todaysOrders.result);
       return  todaysOrders.result;
     }
 
     async getAllOrdersData(){
+      this.user = this.authService.user;
       let result = await this.user.functions.getOrdersData();
       return result;
     }
 
-    totalDayWise(orderData: any) {
+    totalDayWise(orderData: any) {  
+      this.user = this.authService.user;
       // Create a map to group orders by day and payment mode
       const earningsMap = new Map<string, { cash: number; online: number }>();
     

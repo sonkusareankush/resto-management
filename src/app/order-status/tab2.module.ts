@@ -15,6 +15,6 @@ import { ManageItemsComponent } from 'src/components/manage-items/manage-items.c
     Tab2PageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [Tab2Page,AddItemsComponent,ManageItemsComponent]
+  declarations: [Tab2Page,AddItemsComponent,ManageItemsComponent],
 })
 export class Tab2PageModule {}

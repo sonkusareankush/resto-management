@@ -6,6 +6,7 @@ import { Tab1Page } from './tab1.page';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { OrderFormComponent } from 'src/components/order-form/order-form.component';
 import { OrderDetailsCardComponent } from 'src/components/order-details-card/order-details-card.component';
+import { OrdersDataService } from 'src/services/orders-data.service';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { OrderDetailsCardComponent } from 'src/components/order-details-card/ord
     Tab1PageRoutingModule,
     ReactiveFormsModule,
   ],
-  declarations: [Tab1Page,OrderFormComponent,OrderDetailsCardComponent]
+  declarations: [Tab1Page,OrderFormComponent,OrderDetailsCardComponent],
+  providers:[OrdersDataService]
 })
 export class Tab1PageModule {}

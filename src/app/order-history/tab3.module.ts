@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Tab3Page } from './tab3.page';
 
 import { Tab3PageRoutingModule } from './tab3-routing.module';
+import { OrdersDataService } from 'src/services/orders-data.service';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { Tab3PageRoutingModule } from './tab3-routing.module';
     FormsModule,
     Tab3PageRoutingModule
   ],
-  declarations: [Tab3Page]
+  declarations: [Tab3Page],
+  providers:[OrdersDataService]
 })
 export class Tab3PageModule {}

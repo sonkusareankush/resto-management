@@ -17,7 +17,6 @@ export class Tab1Page {
   env = environment.production;
   itemList: any = [];
   orderList: any = [];
-  // allOrdersData: any = [];
   user: any;
   credentials: any;
   modal: any; // to reference the current modal
@@ -32,27 +31,16 @@ export class Tab1Page {
   ) {
     // this.credentials = Realm.Credentials.anonymous();
     // this.user =  this.app.logIn(this.credentials);
+    // this.user = this.authService.user;
 
   }
 
   app: any = new Realm.App({ id: environment.APP_ID });
 
   async ngOnInit() {
-
-    // console.log(this.user)
-    // this.getItems();
-    // this.getOrdersData();
-
-    // this.user = await this.authService.user;
-    // console.log(this.user)
   }
-  async ionViewWillEnter() {
-    // this.getItems();
-    this.user = await this.authService.user;
-    console.log(this.user);
-    if (this.user) {
+  async ionViewWillEnter() {   
       this.getItems();
-    }
   }
 
   async getItems() {
@@ -62,7 +50,7 @@ export class Tab1Page {
     // const credentials = Realm.Credentials.anonymous();
 
     // `App.currentUser` updates to match the logged in user
-    console.assert(this.user.id === this.app.currentUser.id);
+    // console.assert(this.user.id === this.app.currentUser.id);
     await this.getOrdersData();
     this.itemList = await this.items.getItems();//this.user.functions.getItemsData();
     // let orders = await this.OrdersDataService.getAllOrdersData();//this.user.functions.getOrdersData();
@@ -80,6 +68,7 @@ export class Tab1Page {
       this.commenService.stopLoader('OrderLoad');
     }
   }
+
   sortOrderList() {
     this.orderList.sort((a: { created_At: string | number | Date; }, b: { created_At: string | number | Date; }) => {
       return new Date(b.created_At).getTime() - new Date(a.created_At).getTime();

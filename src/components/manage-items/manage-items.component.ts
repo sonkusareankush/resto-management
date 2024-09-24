@@ -32,8 +32,6 @@ export class ManageItemsComponent  implements OnInit {
     this.user = await this.authService.user;
     // console.log(this.user);
     if(this.user){
-    console.assert(this.user.id === this.app.currentUser.id);
-
     const item = await this.user.functions.getItemsData();
     this.itemList = item.result;
     }
