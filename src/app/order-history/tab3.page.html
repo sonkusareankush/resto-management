@@ -15,6 +15,8 @@
         <p>Cash Earning: ₹{{earning.cashEarning}}</p>
         <p>E-Payment: ₹{{earning.onlineEarning}}</p>
         <p>Total: ₹{{earning.onlineEarning + earning.cashEarning}}</p>
+        <ion-button (click)="downloadExcel(earning.day)">Download Excel</ion-button>
+<ion-button (click)="downloadPDF(earning.day)">Download PDF</ion-button>
       </ion-label>
     </ion-item>
   </ion-list>

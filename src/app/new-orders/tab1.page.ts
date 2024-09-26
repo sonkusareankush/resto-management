@@ -96,6 +96,7 @@ export class Tab1Page {
       this.commenService.showLoader();
       console.log(data.data);
       // const user = await this.app.logIn(this.credentials);
+      this.user = this.authService.user;
       let result = await this.user.functions.insertOrdersData(data.data);
       console.log(result)
       if (result.success) {
@@ -114,6 +115,7 @@ export class Tab1Page {
       this.commenService.showLoader();
       console.log(data.data);
       const id = { _id: data.data._id.toString() }
+      this.user = this.authService.user;
       let result = await this.user.functions.updateSingleOrder(id, data.data);
       console.log("Order Updated", result)
       if (result.status) {
@@ -175,6 +177,7 @@ export class Tab1Page {
     const id = {  _id:event.arg1._id.toString()}
 
     console.log(id);
+    this.user = this.authService.user;
    const response =  await this.user.functions.deleteSingleOrder(id);
      console.log(response);
         if (response.status) {

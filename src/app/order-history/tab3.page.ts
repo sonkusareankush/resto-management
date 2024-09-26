@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { OrdersDataService } from 'src/services/orders-data.service'
+import { ReportService } from 'src/services/report.service';
 
 @Component({
   selector: 'app-tab3',
@@ -10,8 +11,10 @@ export class Tab3Page {
   allOrdersData: any = [];
   earningsArray: { day: string, cashEarning: number,onlineEarning:number }[] = [];
   earningsArraySrt: { day: string, cashEarning: number,onlineEarning:number }[] = [];
+  reportData: any;
 
   constructor(    private OrdersDataService:OrdersDataService,
+    private reportService: ReportService
   ) { }
   ionViewWillEnter() {
     this.getAllOrdersData();
@@ -75,6 +78,52 @@ export class Tab3Page {
   
     return `${dayOfWeek} ${day}/${month}/${year}`;
   }
+
+  // async downloadExcel(date:string) {
+  //   let forDate =  date.substring(4);
+  //   const data = await this.reportService.getDayReport(forDate);
+  //   console.log(data)
+  //   this.reportData = data;
+  //   this.reportService.generateExcelReport(this.reportData);
+  // }
+
+  // async downloadPDF(date:string) {
+  //   let forDate =  date.substring(4);
+  //   const data = await this.reportService.getDayReport(forDate);
+  //   console.log(data);
+  //   this.reportData = data;
+  //   this.reportService.generatePDFReport(this.reportData);
+  // }
+
+  async downloadReport(format: 'excel' | 'pdf', date: string) {
+    // Trim the first four characters from the date
+    let forDate = date.substring(4);
+  
+    // Fetch the data based on the date
+    const data = await this.reportService.getDayReport(forDate);
+    console.log(data);
+  
+    // Store the report data
+    this.reportData = data;
+  
+    // Generate the report based on the format
+    if (format === 'excel') {
+      this.reportService.generateExcelReport(this.reportData);
+    } else if (format === 'pdf') {
+      this.reportService.generatePDFReport(this.reportData);
+    }
+  }
+  
+  // Usage for Excel
+  async downloadExcel(date: string) {
+    await this.downloadReport('excel', date);
+  }
+  
+  // Usage for PDF
+  async downloadPDF(date: string) {
+    await this.downloadReport('pdf', date);
+  }
+  
   
     
 }
