@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FcmService } from 'src/services/fcm.service';
 
 
 @Component({
@@ -9,11 +8,12 @@ import { FcmService } from 'src/services/fcm.service';
 })
 export class AppComponent {
   constructor(
-    private fcmService: FcmService
   ) {}
 
   ngOnInit() {
-    this.fcmService.requestPermission();
-    this.fcmService.listenForMessages();
+    console.log("Appcomponent");
+  }
+  ionViewWillEnter(){
+   
   }
 }
