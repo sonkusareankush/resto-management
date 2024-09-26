@@ -24,20 +24,21 @@ export class CommenService {
   }
 
   stopLoader(val: boolean | string = false) {
-    if (val === 'OrderLoad') {
-
+    if (val == 'OrderLoad') {
+      console.log('OrderLoad');
       setTimeout(() => {
         this.loader.dismiss();
       }, 4000);
 
-    }
-    if (val === true) {
-      this.loader.dismiss();
-    }
-    else {
-      setTimeout(() => {
+    } else {
+      if (val === true) {
         this.loader.dismiss();
-      }, 1000)
+      }
+      else {
+        setTimeout(() => {
+          this.loader.dismiss();
+        }, 1000)
+      }
     }
 
   }
