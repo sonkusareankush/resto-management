@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommenService } from 'src/services/commen.service';
 import { OrdersDataService } from 'src/services/orders-data.service'
 import { ReportService } from 'src/services/report.service';
 
@@ -14,7 +15,8 @@ export class Tab3Page {
   reportData: any;
 
   constructor(    private OrdersDataService:OrdersDataService,
-    private reportService: ReportService
+    private reportService: ReportService,
+    private loader: CommenService 
   ) { }
   ionViewWillEnter() {
     this.getAllOrdersData();
@@ -79,39 +81,40 @@ export class Tab3Page {
     return `${dayOfWeek} ${day}/${month}/${year}`;
   }
 
-  // async downloadExcel(date:string) {
-  //   let forDate =  date.substring(4);
-  //   const data = await this.reportService.getDayReport(forDate);
-  //   console.log(data)
-  //   this.reportData = data;
-  //   this.reportService.generateExcelReport(this.reportData);
-  // }
-
-  // async downloadPDF(date:string) {
-  //   let forDate =  date.substring(4);
-  //   const data = await this.reportService.getDayReport(forDate);
-  //   console.log(data);
-  //   this.reportData = data;
-  //   this.reportService.generatePDFReport(this.reportData);
-  // }
-
   async downloadReport(format: 'excel' | 'pdf', date: string) {
-    // Trim the first four characters from the date
-    let forDate = date.substring(4);
-  
-    // Fetch the data based on the date
-    const data = await this.reportService.getDayReport(forDate);
-    console.log(data);
-  
-    // Store the report data
-    this.reportData = data;
-  
-    // Generate the report based on the format
-    if (format === 'excel') {
-      this.reportService.generateExcelReport(this.reportData);
-    } else if (format === 'pdf') {
-      this.reportService.generatePDFReport(this.reportData);
+
+    // Get the current time
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    console.log(currentHour)
+
+    // Check if the current time is after 9 PM (21:00)
+    if (currentHour < 21) {
+      // Show a message or an alert to the user indicating the report can't be downloaded yet
+      alert('You can only download the report after 9 PM.');
+      return;
     }
+    else {
+      this.loader.showLoader();
+      // Trim the first four characters from the date
+      let forDate = date.substring(4);
+
+      // Fetch the data based on the date
+      const data = await this.reportService.getDayReport(forDate);
+      console.log(data);
+
+      // Store the report data
+      this.reportData = data;
+
+      // Generate the report based on the format
+      if (format === 'excel') {
+        this.reportService.generateExcelReport(this.reportData);
+      } else if (format === 'pdf') {
+        this.reportService.generatePDFReport(this.reportData);
+      }
+      this.loader.stopLoader();
+    }
+
   }
   
   // Usage for Excel
